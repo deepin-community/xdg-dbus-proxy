@@ -1,0 +1,68 @@
+xdg-dbus-proxy (0.1.2-2) unstable; urgency=medium
+
+  * Set upstream metadata field: Repository.
+  * Remove obsolete field Name from debian/upstream/metadata (already
+    present in machine-readable debian/copyright)
+  * d/rules: Don't explicitly use --as-needed linker option.
+    It's the default with bullseye toolchains.
+  * d/gbp.conf: Rename development branch to debian/latest
+  * Standards-Version: 4.5.1 (no changes required)
+
+ -- Simon McVittie <smcv@debian.org>  Sat, 19 Dec 2020 12:44:10 +0000
+
+xdg-dbus-proxy (0.1.2-1) unstable; urgency=medium
+
+  * New upstream release
+    - Drop all patches, applied upstream
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 19 Sep 2019 08:11:28 +0100
+
+xdg-dbus-proxy (0.1.1-2) unstable; urgency=medium
+
+  * d/p/Fix-segfault-when-flatpak_proxy_start-fails.patch:
+    Add patch from upstream to fix a crash when startup fails
+  * d/p/build-Forbid-AX_-prefixed-patterns-more-selectively.patch,
+    d/p/build-Adapt-to-AX_CODE_COVERAGE-API-change.patch,
+    d/p/build-Use-CODE_COVERAGE_CPPFLAGS.patch:
+    Add patches proposed upstream to fix FTBFS with autoconf-archive
+    20190106
+  * Remove redundant --libexecdir=/usr/libexec.
+    This is the default at debhelper compat level 12.
+  * Standards-Version: 4.4.0
+  * d/copyright: Update
+  * d/salsa-ci.yml: Request standard CI on salsa.debian.org
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 05 Sep 2019 08:54:23 +0100
+
+xdg-dbus-proxy (0.1.1-1) unstable; urgency=medium
+
+  * d/upstream/metadata: Add DEP-12 metadata
+  * New upstream release
+    - Drop all patches, applied upstream
+  * Remove workaround that made sure build-aux/tap-test was executable.
+    Now that it's part of the upstream source and not added by a patch,
+    it already has suitable permissions.
+
+ -- Simon McVittie <smcv@debian.org>  Sun, 20 Jan 2019 11:13:12 +0000
+
+xdg-dbus-proxy (0.1.0-2) unstable; urgency=medium
+
+  * Improve patch metadata
+  * Add patches to facilitate backporting to stretch
+  * Standards-Version: 4.3.0
+  * Use debhelper-compat 12
+  * Ensure that build-aux/tap-test is executable before running tests
+
+ -- Simon McVittie <smcv@debian.org>  Mon, 14 Jan 2019 20:05:06 +0000
+
+xdg-dbus-proxy (0.1.0-1) unstable; urgency=medium
+
+  * Initial release under this name (Closes: #915579).
+    xdg-dbus-proxy was previously flatpak-dbus-proxy, in the flatpak
+    package. It was factored out by the Flatpak upstream developers so
+    that it can be used by packages like webkit2gtk 2.23.x.
+  * Apply patches from upstream git to add a license, --help, a man page
+    and a simple regression test (upstream PRs #2, #3, #5) and to
+    fix a compiler warning (upstream PR #4)
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 12 Dec 2018 14:57:14 +0000
