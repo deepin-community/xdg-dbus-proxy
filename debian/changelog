@@ -1,3 +1,75 @@
+xdg-dbus-proxy (0.1.7-1) unstable; urgency=medium
+
+  * New upstream release
+    - Prevent Flatpak apps from receiving D-Bus traffic that they should
+      not have been able to receive, by using legacy eavesdropping
+      match rules
+      (CVE-2026-34080, GHSA-vjp5-hjfm-7677)
+
+ -- Simon McVittie <smcv@debian.org>  Tue, 07 Apr 2026 19:29:20 +0100
+
+xdg-dbus-proxy (0.1.6-2) unstable; urgency=medium
+
+  * Normalize packaging (debputy reformat)
+  * d/copyright: Don't quote the FSF's former postal address here
+  * d/watch: Update to uscan format v5
+  * Standards-Version: 4.7.2 (no changes required)
+  * Remove Rules-Requires-Root, default since Debian 13
+  * Use dpkg build API v1
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 29 Oct 2025 13:59:24 +0000
+
+xdg-dbus-proxy (0.1.6-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream release
+  * Bump Standards Version to 4.7.0
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 22 Aug 2024 11:36:07 -0400
+
+xdg-dbus-proxy (0.1.5-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream release
+  * Drop remaining patch: applied in new release
+  * Update standards version to 4.6.2, no changes needed
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 16 Aug 2023 09:40:55 -0400
+
+xdg-dbus-proxy (0.1.4-3) unstable; urgency=medium
+
+  * Depend on dbus-daemon for tests instead of dbus.
+    The tests start their own mock session bus instance, and do not require
+    the implementation of the well-known system bus that is provided by the
+    dbus package.
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 08 Dec 2022 10:46:11 +0000
+
+xdg-dbus-proxy (0.1.4-2) unstable; urgency=medium
+
+  * d/watch: Update for Github website changes
+  * Update standards version to 4.6.1 (no changes needed)
+
+ -- Simon McVittie <smcv@debian.org>  Sat, 12 Nov 2022 17:29:46 +0000
+
+xdg-dbus-proxy (0.1.4-1) unstable; urgency=medium
+
+  * New upstream release
+  * Build using Meson
+  * d/p/meson-Optionally-install-tests-for-as-installed-testing.patch:
+    Add proposed patch to restore parity of installed-tests coverage
+    with Autotools
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 11 May 2022 10:51:07 +0100
+
+xdg-dbus-proxy (0.1.3-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.6.0 (no changes required)
+  * Use debhelper compat level 13, drop dh_missing override
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 11 Feb 2022 12:00:51 +0000
+
 xdg-dbus-proxy (0.1.2-2) unstable; urgency=medium
 
   * Set upstream metadata field: Repository.
