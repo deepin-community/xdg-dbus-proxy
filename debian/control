@@ -1,19 +1,20 @@
 Source: xdg-dbus-proxy
+X-Style: black
 Section: admin
 Priority: optional
 Maintainer: Utopia Maintenance Team <pkg-utopia-maintainers@lists.alioth.debian.org>
 Uploaders:
  Simon McVittie <smcv@debian.org>,
 Build-Depends:
- autoconf-archive,
- dbus <!nocheck>,
- debhelper-compat (= 12),
+ debhelper-compat (= 13),
+ dbus-daemon <!nocheck>,
+ dpkg-build-api (= 1),
  docbook-xml,
  docbook-xsl,
  libglib2.0-dev,
+ meson,
  xsltproc,
-Rules-Requires-Root: no
-Standards-Version: 4.5.1
+Standards-Version: 4.7.2
 Homepage: https://github.com/flatpak/xdg-dbus-proxy
 Vcs-Git: https://salsa.debian.org/debian/xdg-dbus-proxy.git
 Vcs-Browser: https://salsa.debian.org/debian/xdg-dbus-proxy
@@ -40,10 +41,10 @@ Package: xdg-dbus-proxy-tests
 Architecture: any
 Multi-Arch: foreign
 Depends:
+ dbus-daemon,
+ xdg-dbus-proxy,
  ${misc:Depends},
  ${shlibs:Depends},
- dbus,
- xdg-dbus-proxy,
 Recommends:
  gnome-desktop-testing,
 Description: filtering D-Bus proxy - as-installed tests
