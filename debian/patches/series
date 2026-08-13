@@ -1,1 +1,11 @@
-
+Improve-detection-of-eavesdrop-true.patch
+tests/tests-Send-xdg-dbus-proxy-stdout-to-a-copy-of-its-stderr.patch
+tests/tests-Avoid-a-warning-with-newer-GLib.patch
+tests/tests-Optionally-run-a-dbus-monitor.patch
+tests/tests-Factor-out-fixture_start_proxy.patch
+tests/tests-Add-access-control-rules-and-connections-that-match.patch
+tests/tests-Assert-that-ability-to-own-names-is-enforced.patch
+tests/tests-Filter-and-count-incoming-messages-on-each-unsandbo.patch
+tests/tests-Test-method-calls-being-blocked-or-allowed.patch
+GHSA-r7hp-698j-2h6c/Revert-Don-t-require-TALK-permission-for-broadcast-rules.patch
+tests/tests-Test-that-messages-from-outside-sandbox-are-not-rec.patch

@@ -827,14 +827,12 @@ side_closed (ProxySide *side)
   socket = g_socket_connection_get_socket (side->connection);
   g_socket_close (socket, NULL);
   side->closed = TRUE;
-  stop_reading (side);
 
   other_socket = g_socket_connection_get_socket (other_side->connection);
   if (!other_side->closed && other_side->buffers == NULL)
     {
       g_socket_close (other_socket, NULL);
       other_side->closed = TRUE;
-      stop_reading (other_side);
     }
 
   if (other_side->closed)
@@ -2110,31 +2108,6 @@ get_arg0_string (Buffer *buffer)
   return NULL;
 }
 
-/* Matches against any "eavesdrop=", "eavesdrop =", etc. in str */
-static gboolean
-is_eavesdrop (const char *str)
-{
-  const char *e = str;
-
-  while (TRUE)
-    {
-      e = strstr (e, "eavesdrop");
-      if (e == NULL)
-        return FALSE;
-
-      e += strlen ("eavesdrop");
-
-      while (*e == ' '||
-             *e == '\t' ||
-             *e == '\n' ||
-             *e == '\r')
-        e++;
-
-      if (e[0] == '=')
-        return TRUE;
-    }
-}
-
 static gboolean
 validate_arg0_match (FlatpakProxyClient *client, Buffer *buffer)
 {
@@ -2142,13 +2115,15 @@ validate_arg0_match (FlatpakProxyClient *client, Buffer *buffer)
     g_dbus_message_new_from_blob (buffer->data, buffer->size, 0, NULL);
   GVariant *body;
   g_autoptr(GVariant) arg0 = NULL;
+  const char *match;
 
   if (message != NULL &&
       (body = g_dbus_message_get_body (message)) != NULL &&
       (arg0 = g_variant_get_child_value (body, 0)) != NULL &&
       g_variant_is_of_type (arg0, G_VARIANT_TYPE_STRING))
     {
-      if (is_eavesdrop (g_variant_get_string (arg0, NULL)))
+      match = g_variant_get_string (arg0, NULL);
+      if (strstr (match, "eavesdrop=") != NULL)
         return FALSE;
     }
 
@@ -3089,7 +3064,6 @@ side_in_cb (GSocket *socket, GIOCondition condition, gpointer user_data)
                 {
                   g_warning ("Invalid message header read");
                   side_closed (side);
-                  continue;
                 }
               else
                 {

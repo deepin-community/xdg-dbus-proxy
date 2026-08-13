@@ -1,5 +1,4 @@
-Tests:
- gnome-desktop-testing,
+Tests: gnome-desktop-testing
 Depends:
  gnome-desktop-testing,
  xdg-dbus-proxy-tests,

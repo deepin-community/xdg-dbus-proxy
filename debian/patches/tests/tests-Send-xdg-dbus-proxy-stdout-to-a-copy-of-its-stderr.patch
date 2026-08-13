@@ -1,0 +1,34 @@
+From: Simon McVittie <smcv@debian.org>
+Date: Sun, 26 Jul 2026 13:08:55 +0100
+Subject: tests: Send xdg-dbus-proxy stdout to a copy of its stderr
+
+Otherwise, if we enable `--log` or `G_MESSAGES_DEBUG`, the log messages
+on stdout will build up in the stdout pipe until the buffer is full,
+leading to a deadlock because we never read from the pipe.
+
+I think this was originally `G_SUBPROCESS_FLAGS_STDOUT_PIPE` because I'd
+originally intended to use --fd=1 for the sync fd, before realising that
+stdout is not a suitable fd for that purpose because xdg-dbus-proxy uses
+it for other purposes.
+
+Fixes: e339140bb59dae022cd30b91d785a601aa1f1aeb "Add a simple unit test"
+Signed-off-by: Simon McVittie <smcv@debian.org>
+Origin: upstream, 0.1.8
+---
+ tests/test-proxy.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tests/test-proxy.c b/tests/test-proxy.c
+index 54a72ed..df1f00b 100644
+--- a/tests/test-proxy.c
++++ b/tests/test-proxy.c
+@@ -142,7 +142,8 @@ test_basics (Fixture *f,
+   g_assert_no_error (error);
+   f->sync_pipe = sync_pipe[READ_END];
+ 
+-  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
++  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
++  g_subprocess_launcher_take_fd (launcher, dup (STDERR_FILENO), STDOUT_FILENO);
+   g_subprocess_launcher_take_fd (launcher, sync_pipe[WRITE_END], 3);
+   sync_pipe[WRITE_END] = -1;
+ 

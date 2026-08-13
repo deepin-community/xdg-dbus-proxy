@@ -1,0 +1,83 @@
+From: Simon McVittie <smcv@debian.org>
+Date: Sun, 26 Jul 2026 14:03:16 +0100
+Subject: Revert "Don't require TALK permission for broadcast rules"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+The commit reverted here appears to have been based on a misunderstanding
+of how `--broadcast` rules were designed to work. Adding a `--broadcast` or
+`--call` rule gives the sandboxed D-Bus client a *limited* version of the
+TALK permission: it is allowed to call methods or listen for broadcasts
+(as appropriate), and it is allowed to call `StartServiceByName()`
+for the requested bus name.
+
+However, when the rules
+`--broadcast=org.a11y.atspi.Registry.EventListenerRegistered=@/org/a11y/atspi/registry`
+and
+`--broadcast=org.a11y.atspi.Registry.EventListenerDeregistered=@/org/a11y/atspi/registry`
+were added to Flatpak in https://github.com/flatpak/flatpak/pull/5828,
+the meaning of those rules was not as intended: they're matching bus names
+`org.a11y.atspi.Registry.EventListenerRegistered` and …Deregistered`,
+which in practice don't actually exist. As a result, the rules didn't
+appear to work until the Flatpak contributor either added `--talk`
+(which is *unrestricted* TALK access, clearly not desired), or altered
+the xdg-dbus-proxy code so that `--broadcast` would bypass the intended
+broadcast filtering.
+
+Allowing broadcasts in the presence of any rule with the TALK policy
+meant that adding *any* `--broadcast` rule would allow receiving
+*all* broadcasts, regardless of object path, interface or member name
+(any_filter_matches() would not be called), which was clearly not as
+intended.
+
+An attacker could use this to receive host-side broadcasts that are not
+intended to be visible to the sandboxed app, weakening the sandbox. For
+example, a malicious or compromised Flatpak app could receive any
+broadcast on the session bus or the AT-SPI bus.
+
+Undo this change. Instead, we should fix the match rules used on the
+AT-SPI bus by Flatpak to what they were intended to be, which I believe
+means
+`--broadcast=org.a11y.atspi.Registry=org.a11y.atspi.Registry.EventListenerRegistered@/org/a11y/atspi/registry`
+and the same for `…Deregistered`. If non-Flatpak app frameworks use
+xdg-dbus-proxy, they might need similar changes.
+
+Potential collateral damage from this change is that some Flatpak apps
+might have accidentally been relying on the ability to receive all
+broadcast signals on the session bus, which they would have been able
+to do since Flatpak 1.15.9. If such apps exist, they will need to be
+updated to add explicit `--talk-name` rules for the relevant D-Bus names.
+Again, if non-Flatpak app frameworks use xdg-dbus-proxy, those frameworks'
+apps might need similar changes.
+
+This reverts commit 029784535ed9cbec6c431b12ba1a9eca6c147055.
+
+Bug: https://github.com/flatpak/xdg-dbus-proxy/security/advisories/GHSA-r7hp-698j-2h6c
+Signed-off-by: Simon McVittie <smcv@debian.org>
+Origin: upstream, 0.1.8
+---
+ flatpak-proxy.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/flatpak-proxy.c b/flatpak-proxy.c
+index 8a4d597..a97e62b 100644
+--- a/flatpak-proxy.c
++++ b/flatpak-proxy.c
+@@ -2806,11 +2806,11 @@ got_buffer_from_bus (FlatpakProxyClient *client, ProxySide *side, Buffer *buffer
+           policy = flatpak_proxy_client_get_max_policy_and_matched (client, header->sender, &filters);
+ 
+           if (policy == FLATPAK_POLICY_OWN ||
+-              policy == FLATPAK_POLICY_TALK ||
+-              any_filter_matches (filters, FILTER_TYPE_BROADCAST,
+-                                  header->path,
+-                                  header->interface,
+-                                  header->member))
++              (policy == FLATPAK_POLICY_TALK &&
++               any_filter_matches (filters, FILTER_TYPE_BROADCAST,
++                                   header->path,
++                                   header->interface,
++                                   header->member)))
+             filtered = FALSE;
+ 
+           if (filtered)

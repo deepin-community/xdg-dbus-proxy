@@ -1,23 +1,25 @@
-xdg-dbus-proxy (0.1.7-1) unstable; urgency=medium
+xdg-dbus-proxy (0.1.6-1+deb13u2) trixie-security; urgency=high
 
-  * New upstream release
-    - Prevent Flatpak apps from receiving D-Bus traffic that they should
-      not have been able to receive, by using legacy eavesdropping
-      match rules
-      (CVE-2026-34080, GHSA-vjp5-hjfm-7677)
+  * d/p/GHSA-r7hp-698j-2h6c/*.patch:
+    Fix a vulnerability in access control for receiving broadcasts.
+    In 0.1.6 and 0.1.7, a malicious or compromised Flatpak app could
+    receive any broadcast D-Bus message on the session bus or the AT-SPI
+    bus, leading to unintended information disclosure.
+  * d/p/tests/*.patch:
+    Add automated test coverage for message filtering
 
- -- Simon McVittie <smcv@debian.org>  Tue, 07 Apr 2026 19:29:20 +0100
+ -- Simon McVittie <smcv@debian.org>  Tue, 11 Aug 2026 13:43:30 +0100
 
-xdg-dbus-proxy (0.1.6-2) unstable; urgency=medium
+xdg-dbus-proxy (0.1.6-1+deb13u1) trixie-security; urgency=high
 
-  * Normalize packaging (debputy reformat)
-  * d/copyright: Don't quote the FSF's former postal address here
-  * d/watch: Update to uscan format v5
-  * Standards-Version: 4.7.2 (no changes required)
-  * Remove Rules-Requires-Root, default since Debian 13
-  * Use dpkg build API v1
+  * d/gbp.conf: Configure for trixie
+  * d/p/Improve-detection-of-eavesdrop-true.patch:
+    Fix detection of eavesdrop=true match rules, resolving a vulnerability
+    in which a malicious or compromised Flatpak app could monitor D-Bus
+    traffic that it was not intended to be able to access.
+    (CVE-2026-34080) (Closes: #1132939)
 
- -- Simon McVittie <smcv@debian.org>  Wed, 29 Oct 2025 13:59:24 +0000
+ -- Simon McVittie <smcv@debian.org>  Fri, 10 Apr 2026 23:31:23 +0100
 
 xdg-dbus-proxy (0.1.6-1) unstable; urgency=medium
 
