@@ -5,6 +5,17 @@ xdg-dbus-proxy (0.1.7-1) unstable; urgency=medium
       not have been able to receive, by using legacy eavesdropping
       match rules
       (CVE-2026-34080, GHSA-vjp5-hjfm-7677)
+  * fix(cve): CVE-2026-94422 (unknown) - tests: Add basic test coverage
+    for reply handling   Upstream: https://github.com/flatpak/xdg-dbus-
+    proxy/commit/78045ceec1330bd40c91a44d1b89e2bf108410fe,https://github
+    .com/flatpak/xdg-dbus-
+    proxy/commit/e4465a0dfe96da3b39929a30a1ac3a22b16223e3,https://github
+    .com/flatpak/xdg-dbus-
+    proxy/commit/e5702fca4dba9600721921fbca2dbc39dc5ca400,https://github
+    .com/flatpak/xdg-dbus-
+    proxy/commit/e7f2f89bb305f27e6191a8c3d7a1085924ab00e5,https://github
+    .com/flatpak/xdg-dbus-
+    proxy/commit/fc027f759316fb2a6c45648200b6f100202eb84e
 
  -- Simon McVittie <smcv@debian.org>  Tue, 07 Apr 2026 19:29:20 +0100
 
