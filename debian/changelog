@@ -1,3 +1,15 @@
+xdg-dbus-proxy (0.1.7-1deepin1) unstable; urgency=medium
+
+  * fix(cve): CVE-2026-93676 (low) - Revert "Don't require TALK
+    permission for broadcast rules"   Upstream:
+    https://github.com/flatpak/xdg-dbus-
+    proxy/commit/7cf6be73b7ad84f3c54d6fdae069c955948f78e4
+  * fix(cve): CVE-2026-94422 (unknown) - tests: Add basic test coverage
+    for reply handling   Upstream: https://github.com/flatpak/xdg-dbus-
+    proxy/commit/78045ceec1330bd40c91a44d1b89e2bf108410fe
+
+ -- deepin-ci-robot <packages@deepin.org>  Mon, 21 Sep 2026 15:22:32 +0800
+
 xdg-dbus-proxy (0.1.7-1) unstable; urgency=medium
 
   * New upstream release
