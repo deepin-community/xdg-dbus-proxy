@@ -1,3 +1,15 @@
+xdg-dbus-proxy (0.1.7-1deepin2) unstable; urgency=medium
+
+  * fix(cve): CVE-2026-94422 - the deepin1 patch was an incomplete
+    backport: three call sites still used the pre-rename
+    queue_expected_reply()/steal_expected_reply(), which broke the build
+    (implicit-function-declaration, and undefined reference at link) and
+    omitted the destination check that actually fixes the vulnerability.
+    Regenerate it from upstream e4465a0 (0.1.8) and add the upstream
+    reply regression tests.
+
+ -- lichenggang <lichenggang@uniontech.com>  Tue, 13 Oct 2026 10:25:13 +0800
+
 xdg-dbus-proxy (0.1.7-1deepin1) unstable; urgency=medium
 
   * fix(cve): CVE-2026-93676 (low) - Revert "Don't require TALK
